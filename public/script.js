@@ -3,13 +3,19 @@ document.getElementById('loginbtn').addEventListener('click', loginWithFacebook,
 function loginWithFacebook() {
 
     FB.getLoginStatus(response => {
+
+        // check if user account is already connected or not
         if(response.status !== 'connected') {
+
+            // if not connected
             FB.login(response => {
                 console.log(response);
             }, { scope: 'public_profile,email' });
             return false;
+
         } else {
             const { authResponse: { accessToken, userID } } = response;
+
 
             fetch('/login-facebook', {
                 method: 'POST',
@@ -21,6 +27,7 @@ function loginWithFacebook() {
                 console.log(res);
             })
 
+            
             FB.api('/me', function(response) {
                 console.log(JSON.stringify(response));
             });
